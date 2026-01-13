@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Zyronix-LG - Menú Principal</title>
-      <link rel="icon" href="Icono.png" />
+    <link rel="icon" href="Icono.png" />
     <link rel="stylesheet" href="PaginaPrincipal.css" />
 </head>
 
@@ -28,11 +28,13 @@
 
             <!-- Navieras -->
             <div class="Contenido">
-                <a href="javascript:void(0)" class="dropbtn">Navieras<span class="ivu-icon-arrow-down-b"></span></a>
+                <a href="javascript:void(0)" class="dropbtn">Revalidacion<span class="ivu-icon-arrow-down-b"></span></a>
                 <div class="Contenido-content">
                     <a href="javascript:void(0)" onclick="mostrarSeccion('trackingSection')">Tracking</a>
                     <a href="javascript:void(0)" onclick="mostrarSeccion('estadoSection')">Estado de Carga</a>
-                    <a href="javascript:void(0)" onclick="mostrarSeccion('CargasSueltas')">Cargas Sueltas</a>
+                    <a href="javascript:void(0)" onclick="mostrarSeccion('CargasSueltas')">Carga Suelta</a>
+                    <a href="javascript:void(0)" onclick="mostrarSeccion('PagoContenerizado')">Pagos Contenerizados</a>
+                    <a href="Otros.html" onclick="mostrarSeccion('Facturacion')">Otros</a>
                 </div>
             </div>
 
@@ -49,7 +51,7 @@
             <div class="Contenido">
                 <a href="javascript:void(0)" class="dropbtn">Biblioteca <span class="ivu-icon-arrow-down-b"></span></a>
                 <div class="Contenido-content">
-                    <a href="#">Revalidacion</a>
+                    <a href="#">En proceso...</a>
                 </div>
             </div>
 
@@ -204,11 +206,11 @@
                 </a>
             </div>
         </div>
-    </main>
 
-    <!-- Cargas Sueltas-->
+
+        <!-- Cargas Sueltas-->
         <div id="CargasSueltas" class="tracking-section" style="display:none;">
-            <h2>Cargas Sueltas</h2>
+            <h2>Carga Suelta</h2>
             <div class="tracking-logos">
 
                 <a href="https://smartport.com.mx/Home/Index/TIMSA" target="_blank">
@@ -231,7 +233,8 @@
                     <img src="DESYCONCARGO.png" alt="DESYCONCARGO">
                 </a>
 
-                <a href="https://lclports.trazabilidad.digital/app/sign-in?redirectURL=%2Fdashboards%2Fproject" target="_blank">
+                <a href="https://lclports.trazabilidad.digital/app/sign-in?redirectURL=%2Fdashboards%2Fproject"
+                    target="_blank">
                     <img src="LCL PORTS.png" alt="LCL PORTS">
                 </a>
 
@@ -247,7 +250,8 @@
                     <img src="LPM.png" alt="LPM">
                 </a>
 
-                <a href="https://servicios.ocupa.mx:50132/ords/r/bita_services/bita-portal-de-servicios/login" target="_blank">
+                <a href="https://servicios.ocupa.mx:50132/ords/r/bita_services/bita-portal-de-servicios/login"
+                    target="_blank">
                     <img src="BITA SSA.png" alt="BITA">
                 </a>
 
@@ -262,6 +266,31 @@
 
             </div>
         </div>
+
+
+        <div id="PagoContenerizado" class="tracking-section" style="display:none;">
+            <h2>Pagos referenciados</h2>
+            <div class="tracking-logos">
+
+                <a href="https://pagoreferenciado.pilship.com.mx/Account/Login?ReturnUrl=%2F" target="_blank">
+                    <img src="PIL.png" alt="PIL">
+                </a>
+
+                <a href="https://pagoreferenciadorcl.maritimex.com.mx/Account/Login?ReturnUrl=%2F" target="_blank">
+                    <img src="RCL.png" alt="RCL">
+                </a>
+
+                <a href="https://pagoreferenciado.maritimex.com.mx/Account/Login?ReturnUrl=%2F" target="_blank">
+                    <img src="YANG MING.png" alt="YANG MING">
+                </a>
+
+                <a href="https://pagoreferenciadokmtc.maritimex.com.mx/Account/Login?ReturnUrl=%2F" target="_blank">
+                    <img src="KMTC.png" alt="KMTC">
+                </a>
+
+            </div>
+        </div>
+
     </main>
 
     <script>
@@ -269,6 +298,7 @@
             document.getElementById("trackingSection").style.display = "none";
             document.getElementById("estadoSection").style.display = "none";
             document.getElementById("CargasSueltas").style.display = "none";
+            document.getElementById("PagoContenerizado").style.display = "none";
 
             const section = document.getElementById(id);
             section.style.display = "block";
