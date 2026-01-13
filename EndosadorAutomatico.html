@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Zyronix-LG - Endosador Automático</title>
-    <link rel="icon" href="icono.png">
+    <link rel="icon" href="Icono.png" />
     <link rel="stylesheet" href="EndosadorAutomatico.css">
 </head>
 
@@ -12,31 +12,29 @@
 <h2>Sube uno o más archivos PDF para endosar</h2>
 
 <div id="Controles">
-
     <label>
-        <input type="checkbox" id="selloEnvases">
+        <input type="checkbox" id="selloenvases">
         <span></span>
         Sello Envases Universales
     </label>
 
     <label>
-        <input type="checkbox" id="selloAltaCargo" checked>
+        <input type="checkbox" id="sellomanzanillo" checked>
         <span></span>
         Sello AltaCargo Manzanillo
     </label>
 
     <label>
-        <input type="checkbox" id="selloVeracruz">
+        <input type="checkbox" id="selloveracruz">
         <span></span>
         Sello Altacargo Veracruz
     </label>
 
     <label>
-        <input type="checkbox" id="selloVeronica">
+        <input type="checkbox" id="selloaltamira">
         <span></span>
         Sello Altacargo Verónica Altamira
     </label>
-
 </div>
 
 <input type="file" id="pdfUploader" accept="application/pdf" multiple>
@@ -46,13 +44,14 @@
 <script>
 const uploader = document.getElementById("pdfUploader");
 
-const chkEnvases   = document.getElementById("selloEnvases");
-const chkAltaCargo = document.getElementById("selloAltaCargo");
-const chkVeracruz  = document.getElementById("selloVeracruz");
-const chkVeronica  = document.getElementById("selloVeronica");
+const chkEnvases   = document.getElementById("selloenvases");
+const chkAltaCargo = document.getElementById("sellomanzanillo");
+const chkVeracruz  = document.getElementById("selloveracruz");
+const chkVeronica  = document.getElementById("selloaltamira");
 
 const terminales = [chkAltaCargo, chkVeracruz, chkVeronica];
 
+/* === SOLO UN SELLO DE TERMINAL === */
 terminales.forEach(chk => {
     chk.addEventListener("change", () => {
         if (chk.checked) {
@@ -63,12 +62,10 @@ terminales.forEach(chk => {
     });
 });
 
+/* === CARGA DE SELLOS === */
 async function cargarSello(pdfDoc, url) {
     const res = await fetch(url);
-    if (!res.ok) {
-        console.error("❌ No se encontró el sello:", url);
-        throw new Error("No se pudo cargar el sello: " + url);
-    }
+    if (!res.ok) throw new Error("No se pudo cargar el sello");
     const bytes = await res.arrayBuffer();
     return pdfDoc.embedPng(bytes);
 }
@@ -82,13 +79,15 @@ uploader.addEventListener("change", async (e) => {
         reader.onload = async ev => {
             try {
 
+                /* 🔐 CARGA SIN IGNORAR ENCRIPTADO */
                 let pdfDoc;
                 try {
                     pdfDoc = await PDFLib.PDFDocument.load(ev.target.result);
                 } catch {
                     alert(
                         "⚠️ DOCUMENTO PROTEGIDO\n\n" +
-                        "Este PDF está encriptado y no puede ser endosado."
+                        "Este PDF está encriptado y no puede ser endosado " +
+                        "debido a restricciones de seguridad del documento."
                     );
                     return;
                 }
@@ -99,17 +98,15 @@ uploader.addEventListener("change", async (e) => {
                 let selloTerminalImg = null;
 
                 if (chkEnvases.checked) {
-                    selloEnvasesImg = await cargarSello(pdfDoc, "selloEnvases.png");
+                    selloEnvasesImg = await cargarSello(pdfDoc, "selloenvases.png");
                 }
 
                 if (chkAltaCargo.checked) {
-                    selloTerminalImg = await cargarSello(pdfDoc, "selloAltacargo.png");
-                } 
-                else if (chkVeracruz.checked) {
-                    selloTerminalImg = await cargarSello(pdfDoc, "selloAltacargoVeracruz1.png");
-                } 
-                else if (chkVeronica.checked) {
-                    selloTerminalImg = await cargarSello(pdfDoc, "selloAltacargoVeronica2.png");
+                    selloTerminalImg = await cargarSello(pdfDoc, "sellomanzanillo.png");
+                } else if (chkVeracruz.checked) {
+                    selloTerminalImg = await cargarSello(pdfDoc, "selloveracruz.png");
+                } else if (chkVeronica.checked) {
+                    selloTerminalImg = await cargarSello(pdfDoc, "selloaltamira.png");
                 }
 
                 if (!selloTerminalImg) {
@@ -117,7 +114,7 @@ uploader.addEventListener("change", async (e) => {
                     return;
                 }
 
-                const W_ENVASES  = 220;
+                const W_ENVASES = 220;
                 const W_TERMINAL = 200;
 
                 pages.forEach(page => {
@@ -147,11 +144,8 @@ uploader.addEventListener("change", async (e) => {
                 const blob = new Blob([pdfBytes], { type: "application/pdf" });
                 const url = URL.createObjectURL(blob);
 
-                const limpio = file.name
-                    .replace(".pdf", "")
-                    .replace(/[^a-zA-Z0-9]/g, "");
-
                 const link = document.createElement("a");
+                const limpio = file.name.replace(".pdf", "").replace(/[^a-zA-Z0-9]/g, "");
                 link.href = url;
                 link.download = `ENDOSADO-${limpio}.pdf`;
                 link.click();
