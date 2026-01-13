@@ -99,17 +99,17 @@ uploader.addEventListener("change", async (e) => {
                 let selloTerminalImg = null;
 
                 if (chkEnvases.checked) {
-                    selloEnvasesImg = await cargarSello(pdfDoc, "selloenvases.png");
+                    selloEnvasesImg = await cargarSello(pdfDoc, "selloEnvases.png");
                 }
 
                 if (chkAltaCargo.checked) {
-                    selloTerminalImg = await cargarSello(pdfDoc, "selloaltacargo.png");
+                    selloTerminalImg = await cargarSello(pdfDoc, "selloAltacargo.png");
                 } 
                 else if (chkVeracruz.checked) {
-                    selloTerminalImg = await cargarSello(pdfDoc, "selloaltacargoveracruz1.png");
+                    selloTerminalImg = await cargarSello(pdfDoc, "selloAltacargoVeracruz1.png");
                 } 
                 else if (chkVeronica.checked) {
-                    selloTerminalImg = await cargarSello(pdfDoc, "selloaltacargoveronica2.png");
+                    selloTerminalImg = await cargarSello(pdfDoc, "selloAltacargoVeronica2.png");
                 }
 
                 if (!selloTerminalImg) {
@@ -176,4 +176,3 @@ uploader.addEventListener("change", async (e) => {
 
 </body>
 </html>
-
