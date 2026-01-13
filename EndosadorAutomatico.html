@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Zyronix-LG - Endosador Automático</title>
-    <link rel="icon" href="Icono.png" />
+    <link rel="icon" href="Icono.png">
     <link rel="stylesheet" href="EndosadorAutomatico.css">
 </head>
 
@@ -51,7 +51,6 @@ const chkVeronica  = document.getElementById("selloaltamira");
 
 const terminales = [chkAltaCargo, chkVeracruz, chkVeronica];
 
-/* === SOLO UN SELLO DE TERMINAL === */
 terminales.forEach(chk => {
     chk.addEventListener("change", () => {
         if (chk.checked) {
@@ -62,10 +61,12 @@ terminales.forEach(chk => {
     });
 });
 
-/* === CARGA DE SELLOS === */
-async function cargarSello(pdfDoc, url) {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error("No se pudo cargar el sello");
+async function cargarSello(pdfDoc, archivo) {
+    const res = await fetch(`./${archivo}`);
+    if (!res.ok) {
+        console.error("❌ No se encontró el archivo:", archivo);
+        throw new Error("No se pudo cargar el sello");
+    }
     const bytes = await res.arrayBuffer();
     return pdfDoc.embedPng(bytes);
 }
@@ -79,16 +80,11 @@ uploader.addEventListener("change", async (e) => {
         reader.onload = async ev => {
             try {
 
-                /* 🔐 CARGA SIN IGNORAR ENCRIPTADO */
                 let pdfDoc;
                 try {
                     pdfDoc = await PDFLib.PDFDocument.load(ev.target.result);
                 } catch {
-                    alert(
-                        "⚠️ DOCUMENTO PROTEGIDO\n\n" +
-                        "Este PDF está encriptado y no puede ser endosado " +
-                        "debido a restricciones de seguridad del documento."
-                    );
+                    alert("⚠️ Este PDF está protegido y no puede endosarse.");
                     return;
                 }
 
@@ -140,12 +136,11 @@ uploader.addEventListener("change", async (e) => {
                 });
 
                 const pdfBytes = await pdfDoc.save();
-
                 const blob = new Blob([pdfBytes], { type: "application/pdf" });
                 const url = URL.createObjectURL(blob);
 
-                const link = document.createElement("a");
                 const limpio = file.name.replace(".pdf", "").replace(/[^a-zA-Z0-9]/g, "");
+                const link = document.createElement("a");
                 link.href = url;
                 link.download = `ENDOSADO-${limpio}.pdf`;
                 link.click();
@@ -170,3 +165,4 @@ uploader.addEventListener("change", async (e) => {
 
 </body>
 </html>
+
