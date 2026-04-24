@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Buscador de Material</title>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+<style>
+body {
+    font-family: 'Segoe UI', Arial;
+    background: #0f172a;
+    color: white;
+    margin: 0;
+}
+
+.contenedor {
+    display: flex;
+    height: 100vh;
+}
+
+.panel {
+    width: 400px;
+    padding: 20px;
+}
+
+.titulo {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #22c55e;
+}
+
+input {
+    padding: 10px;
+    width: 100%;
+    border-radius: 8px;
+    border: none;
+    margin-top: 8px;
+    background: #1e293b;
+    color: white;
+}
+
+button {
+    padding: 10px;
+    background: #22c55e;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+}
+
+button:hover {
+    background: #16a34a;
+}
+
+.resultado {
+    margin-top: 15px;
+    background: #1e293b;
+    padding: 12px;
+    border-radius: 10px;
+}
+
+.resultado b {
+    color: #22c55e;
+}
+
+.web {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: #020617;
+}
+</style>
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <!-- IZQUIERDA -->
+    <div class="panel">
+        <div class="titulo">🔎 Buscador de Material</div>
+
+        <input type="file" id="excelFile">
+        <input type="text" id="buscarParte" placeholder="Número de material">
+
+        <button onclick="buscarParte()">Buscar</button>
+        <button onclick="buscarEnWeb()">Buscar en Base Arancelaria</button>
+
+        <div id="resultado" class="resultado"></div>
+    </div>
+
+    <!-- DERECHA -->
+    <div class="web">
+        <h2>🌐 Base Arancelaria</h2>
+        <p id="valorBuscado"></p>
+    </div>
+
+</div>
+
+<script>
+
+let catalogoIndex = {};
+let ventanaDB = null;
+
+// CARGAR EXCEL
+document.getElementById('excelFile').addEventListener('change', function(e){
+
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function(event){
+
+        const data = new Uint8Array(event.target.result);
+        const workbook = XLSX.read(data, {type: 'array'});
+
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        const json = XLSX.utils.sheet_to_json(sheet);
+
+        json.forEach(item => {
+            if(item.material){
+                catalogoIndex[item.material.toString().toUpperCase()] = item;
+            }
+        });
+
+        alert("Catálogo cargado: " + json.length + " registros");
+    };
+
+    reader.readAsArrayBuffer(file);
+});
+
+// 🔍 BUSCAR + COPIAR SOLO NICO
+function buscarParte(){
+
+    const valor = document.getElementById('buscarParte').value.trim().toUpperCase();
+    const resultadoDiv = document.getElementById('resultado');
+
+    if(!valor){
+        resultadoDiv.innerHTML = "Escribe un material";
+        return;
+    }
+
+    const encontrado = catalogoIndex[valor];
+
+    if(encontrado){
+
+        // Mostrar info
+        resultadoDiv.innerHTML = `
+            <b>Material:</b> ${encontrado.material || ""}<br>
+            <b>Descripción:</b> ${encontrado.descripcion || ""}<br>
+            <b>Fracción:</b> ${encontrado.fraccion || ""}<br>
+            <b>Fracción NICO:</b> ${encontrado.fraccion_nico || ""}<br>
+            <b>Tasa:</b> ${encontrado.tasa || ""}<br>
+            <b>UMT:</b> ${encontrado.umt || ""}
+        `;
+
+        // 🔥 COPIAR SOLO NICO AUTOMÁTICO
+        if(encontrado.fraccion_nico){
+            navigator.clipboard.writeText(encontrado.fraccion_nico);
+        }
+
+    } else {
+        resultadoDiv.innerHTML = "<span style='color:#f87171;'>No encontrado</span>";
+    }
+}
+
+// 🌐 BOTÓN CAAREM (SOLO NICO + UNA VENTANA)
+function buscarEnWeb(){
+
+    const valor = document.getElementById('buscarParte').value.trim().toUpperCase();
+    if(!valor) return;
+
+    const encontrado = catalogoIndex[valor];
+    if(!encontrado) return;
+
+    // 🔥 SOLO NICO
+    const texto = encontrado.fraccion_nico || "";
+
+    navigator.clipboard.writeText(texto);
+
+    document.getElementById("valorBuscado").innerText = "Copiado NICO: " + texto;
+
+    const url = "https://databaseconsulting.mx/DBCC.nsf/MenuEAA?OpenForm&Login";
+
+    if (ventanaDB && !ventanaDB.closed) {
+        ventanaDB.focus();
+    } else {
+        ventanaDB = window.open(url, "DB_WINDOW");
+    }
+}
+
+</script>
+
+</body>
+</html>

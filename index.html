@@ -1,94 +1,121 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zyronix-LG</title>
-  <link rel="icon" href="Icono.png" />
-  <link rel="stylesheet" href="IndexDiseño.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balamar Port | Login</title>
+    <link rel="stylesheet" href="login.css">
 </head>
 
 <body>
 
-  <header>
-    <h2 class="logo">Zyronix-LG</h2>
+    <header class="balamar-header">
 
-    <nav class="Navegacion">
-      <button class="BotonLogin-popup">Iniciar Sesión</button>
-    </nav>
-  </header>
+        <div class="balamar-header-container">
 
-  <div class="LoginEmergente">
-    <span class="CerrarIcono">
-      <ion-icon name="close"></ion-icon>
-    </span>
+            <div class="balamar-left">
+                <img src="logosinletras.png" alt="balamar-port">
+                <span class="balamar-title">
+                    BALAMAR <span class="port">PORT</span>
+                </span>
 
-    <div class="form-box login">
-      <h2>Iniciar Sesión</h2>
+            </div>
 
-      <form id="loginForm">
-        <div class="VetanaBoton">
-          <input type="email" name="email" required placeholder=" " />
-          <label>Correo electrónico</label>
-          <span class="icon">
-            <ion-icon name="mail-outline"></ion-icon>
-          </span>
+            <div class="balamar-right">
+                <span class="user-sep">|</span>
+                <a href="panel.html">Iniciar sesión</a>
+            </div>
+
         </div>
 
-        <div class="VetanaBoton">
-          <input type="password" name="password" required placeholder=" " />
-          <label>Contraseña</label>
-          <span class="icon">
-            <ion-icon name="lock-closed-outline"></ion-icon>
-          </span>
-        </div>
+    </header>
 
-        <button type="submit" class="btn">Entrar</button>
-      </form>
-    </div>
-  </div>
 
-  <div id="MensajeBienvenida">
-    Zyronix-LG le da la bienvenida
-  </div>
+    <main class="home">
 
-  <script>
-    const LoginEmergente = document.querySelector('.LoginEmergente');
-    const btnPopup = document.querySelector('.BotonLogin-popup');
-    const iconClose = document.querySelector('.CerrarIcono');
-    const loginForm = document.getElementById("loginForm");
-    const mensaje = document.getElementById("MensajeBienvenida");
+        <section class="hero">
 
-    btnPopup.addEventListener('click', () => {
-      LoginEmergente.classList.add('active-popup');
-    });
+            <div class="hero-content">
 
-    iconClose.addEventListener('click', () => {
-      LoginEmergente.classList.remove('active-popup');
-    });
+                <h1>
+                    Plataforma para operaciones portuarias y comercio exterior
+                </h1>
 
-    loginForm.addEventListener("submit", function (e) {
-      e.preventDefault();
+                <p>
+                <p>
+                    Balamar Port es una plataforma especializada para agencias aduanales...
+                </p>
 
-      const email = loginForm.email.value.trim();
-      const password = loginForm.password.value;
+                </p>
 
-      if (email === "gael.lazaro@Zyronix-LG.com" && password === "Zyronix25") {
-        mensaje.style.display = "block";
-        LoginEmergente.classList.remove('active-popup');
+            </div>
 
-        setTimeout(() => {
-          window.location.href = "PaginaPrincipal.html";
-        }, 2000);
-      } else {
-        alert("Correo o contraseña incorrectos");
-      }
-    });
-  </script>
+        </section>
 
-  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+        <section class="services">
+
+            <h2>Soluciones operativos Balamar</h2>
+
+            <div class="services-grid">
+
+
+                <div class="service-card">
+                    <h3>Integración con navieras y terminales</h3>
+                    <p>
+                        Conexión con portales de navieras y terminales para consulta y validación de información.
+                    </p>
+                </div>
+
+                <div class="service-card">
+                    <h3>Automatización de procesos</h3>
+                    <p>
+                        Reduzca tareas manuales como endosar, buscar cuentas bancarias, procesos de liberacion, etc...
+                    </p>
+                </div>
+
+                <div class="service-card">
+                    <h3>Control y trazabilidad</h3>
+                    <p>
+                        Seguimiento de embarques, contenedores y estatus de tus embarques en un solo panel.
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+        
+        <section class="cta">
+
+            <span class="balamar-title">
+                BALAMAR <span class="port">PORT</span> © 2026 | Privacy Statement | Terms Of Use
+            </span>
+
+        </section>
+
+    </main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </body>
+
 </html>
